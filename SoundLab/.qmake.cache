@@ -1,0 +1,21 @@
+ROOT_PATH = $${PWD}/
+
+SLABINCLUDE = $$PWD/include
+SLABLIB = $$PWD/lib
+SLABSRC = $$PWD/src
+SLABBIN = $$PWD/bin
+CONFIG += quiet
+
+TEMP_PREFIX=release
+CORELIB = $$SLABLIB/corelib
+GUILIB = $$SLABLIB/guilib
+
+
+Debug: TEMP_PREFIX=debug
+
+
+
+OBJECTS_DIR     = build/obj/$${TEMP_PREFIX}_shared
+MOC_DIR         = build/moc/$${TEMP_PREFIX}_shared
+RCC_DIR         = build/rcc/$${TEMP_PREFIX}_shared
+UI_DIR          = build/ui
