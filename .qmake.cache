@@ -1,0 +1,13 @@
+ROOT_PATH = $${PWD}/
+
+SLABINCLUDE = $$PWD/include
+SLABLIB = $$PWD/lib
+SLABSRC = $$PWD/src
+SLABBIN = $$PWD/bin
+CONFIG += quiet
+
+TEMP_PREFIX=release
+MATHLIB = $$SLABLIB/mathlib
+
+
+Debug: TEMP_PREFIX=debug
