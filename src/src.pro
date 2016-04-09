@@ -14,14 +14,16 @@ SOURCES += main.cpp \
     core/ctrlpanel.cpp \
     core/toolbar.cpp \
     core/track.cpp \
-    core/workspace.cpp
+    core/workspace.cpp \
+    core/plugin.cpp
 
 HEADERS += mainwindow.h \
     mainwindow.h \
     core/ctrlpanel.h \
     core/toolbar.h \
     core/track.h \
-    core/workspace.h
+    core/workspace.h \
+    core/plugin.h
 
 LIBS += -L$$SLABLIB/mathlib -lmathlib
 
