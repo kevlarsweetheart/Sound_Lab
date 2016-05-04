@@ -1,5 +1,4 @@
-QT += core
-QT += gui
+QT += core gui widgets
 
 TEMPLATE = app
 TARGET = editor
@@ -8,14 +7,12 @@ INCLUDEPATH += $$SLABINCLUDE/mathlib
 DESTDIR += $$SLABBIN
 
 SOURCES += main.cpp \
-           mainwindow.cpp \
-    main.cpp \
-    mainwindow.cpp \
     core/ctrlpanel.cpp \
     core/toolbar.cpp \
     core/track.cpp \
     core/workspace.cpp \
-    core/plugin.cpp
+    core/plugin.cpp \
+    mainwindow.cpp
 
 HEADERS += mainwindow.h \
     mainwindow.h \
@@ -23,9 +20,11 @@ HEADERS += mainwindow.h \
     core/toolbar.h \
     core/track.h \
     core/workspace.h \
-    core/plugin.h
+    core/plugin.h \
+    mainwindow.h
 
-LIBS += -L$$SLABLIB/mathlib -lmathlib
+
 
 FORMS += \
+    mainwindow.ui \
     mainwindow.ui
