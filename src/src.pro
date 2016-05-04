@@ -7,24 +7,19 @@ INCLUDEPATH += $$SLABINCLUDE/mathlib
 DESTDIR += $$SLABBIN
 
 SOURCES += main.cpp \
-    core/ctrlpanel.cpp \
-    core/toolbar.cpp \
-    core/track.cpp \
     core/workspace.cpp \
-    core/plugin.cpp \
+    core/track.cpp \
+    core/filepart.cpp \
+    core/audiofile.cpp \
     mainwindow.cpp
 
 HEADERS += mainwindow.h \
     mainwindow.h \
-    core/ctrlpanel.h \
-    core/toolbar.h \
-    core/track.h \
-    core/workspace.h \
-    core/plugin.h \
+    core/audio.h
     mainwindow.h
 
 
 
 FORMS += \
-    mainwindow.ui \
     mainwindow.ui
+
