@@ -14,12 +14,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::on_loadFile_btn_clicked()
 {
-    ui->filesList->addItem("Hello");
+    FileManager fileManager;
+    fileManager.setModal(true);
+    fileManager.exec();
 }
 
 void MainWindow::on_unloadFile_btn_clicked()
 {
-    ui->filesList->currentItem()->~QListWidgetItem();
+
 }

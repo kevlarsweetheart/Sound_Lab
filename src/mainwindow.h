@@ -5,6 +5,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <vector>
+#include <string>
+#include "filemanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +28,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    std::vector<std::string *> someStrings;
 };
 
 #endif // MAINWINDOW_H
