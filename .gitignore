@@ -1,4 +1,4 @@
-/bin/*
-/build/*
-/lib/*
-/src/src.pro
+bin/
+build/
+lib/
+src/src.pro

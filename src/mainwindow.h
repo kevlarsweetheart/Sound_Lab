@@ -2,12 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QPushButton>
 #include <vector>
 #include <string>
-#include "filemanager.h"
+#include <QStringList>
+#include <QStringListModel>
+#include <QMessageBox>
+#include "filemanager/filemanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,7 +29,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    std::vector<std::string *> someStrings;
+    QStringListModel *filesModel;
+    QStringList filesList;
 };
 
 #endif // MAINWINDOW_H
