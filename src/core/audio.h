@@ -12,25 +12,28 @@
 
 namespace Audio
 {
+
+    struct file_inf {
+        std::vector<int> data_left;
+        std::vector<int> data_right;
+        ALsizei frequency;
+        ALenum format;
+        ALsizei size;
+        short bit_depth;
+    };
+
     class Audiofile
     {
     private:
-        struct file_inf {
-            int *data_left;
-            int *data_right;
-            ALsizei frequency;
-            ALenum format;
-            ALsizei size;
-            short bit_depth;
-        };
+        struct file_inf fdata;
     public:
         std::string file_name;
         Audiofile();
         ~Audiofile();
-        std::string parsePath(std::string path);
-        bool loadData(std::string path);
-        bool loadData(struct file_inf input);
-        struct file_inf getData();
+        void getName(std::string path); //Gets file name from the path
+        bool loadData(std::string path); //Loads data from existing external file
+        bool loadData(struct file_inf input); //Loads data from internal non-existing source
+        struct file_inf getData(); //Returns data for intermediate editings
     };
 
     class FilePart
