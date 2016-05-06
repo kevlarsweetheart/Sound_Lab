@@ -6,15 +6,15 @@ FileManager::FileManager(QDialog *parent) :
     ui(new Ui::FileManager)
 {
     ui->setupUi(this);
-    QString rootPath = "/";
+    //QString rootPath = "/";
     dirModel = new QFileSystemModel(this);
     fileModel = new QFileSystemModel(this);
 
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
-    dirModel->setRootPath(rootPath);
+    dirModel->setRootPath(QDir::currentPath());
 
     fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files);
-    fileModel->setRootPath(rootPath);
+    fileModel->setRootPath(QDir::currentPath());
 
     ui->treeView->setModel(dirModel);
     ui->listView->setModel(fileModel);
@@ -50,13 +50,20 @@ void FileManager::on_listView_doubleClicked(const QModelIndex &index)
         std::string format = fileName.substr(foundDot);
         if(format == "wav")
         {
+           this->fullPath = fileName;
            this->close();
         }
     }
-        ui->label->setText("Wrong format");
+    ui->label->setText("Wrong format");
 }
 
 void FileManager::on_load_btn_clicked()
 {
     this->on_listView_doubleClicked(ui->listView->currentIndex());
+}
+
+
+std::string FileManager::ReturnPath()
+{
+    return this->fullPath;
 }

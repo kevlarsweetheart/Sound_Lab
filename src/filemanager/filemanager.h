@@ -16,7 +16,7 @@ class FileManager : public QDialog
 public:
     explicit FileManager(QDialog *parent = 0);
     ~FileManager();
-    std::string path;
+    std::string ReturnPath();
 
 private slots:
     void on_treeView_clicked(const QModelIndex &index);
@@ -33,6 +33,7 @@ private:
     Ui::FileManager *ui;
     QFileSystemModel *dirModel;
     QFileSystemModel *fileModel;
+    std::string fullPath;
 };
 
 #endif // FILEMANAGER_H
