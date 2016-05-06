@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -9,9 +10,18 @@
 #include <QStringListModel>
 #include <QMessageBox>
 #include "filemanager/filemanager.h"
+#include "core/audio.h"
 
 namespace Ui {
 class MainWindow;
+}
+
+namespace Audio
+{
+    class Workspace;
+    class Track;
+    class Audiofile;
+    class FilePart;
 }
 
 class MainWindow : public QMainWindow
@@ -29,6 +39,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Audio::Workspace *workspace;
     QStringListModel *filesModel;
     QStringList filesList;
 };

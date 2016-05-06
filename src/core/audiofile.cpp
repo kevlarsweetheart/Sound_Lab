@@ -75,3 +75,8 @@ struct file_inf Audiofile::getData()
 {
     return this->fdata;
 }
+
+int Audiofile::getAudioLength()
+{
+    return this->fdata.data_right.size();
+}

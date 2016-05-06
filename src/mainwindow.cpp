@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->dial, SIGNAL(valueChanged(int)), ui->lcdNumber_pan, SLOT(display(int)));
+
+    this->workspace = new Audio::Workspace(this);
+
     filesModel = new QStringListModel;
     filesModel->setStringList(filesList);
     ui->fileList->setModel(filesModel);
@@ -50,6 +53,11 @@ void MainWindow::on_loadFile_btn_clicked()
 
     filesList << qFileName;
     filesModel->setStringList(filesList);
+
+    Audio::Audiofile *newbie = new Audio::Audiofile;
+    newbie->file_name = fileName;
+    newbie->loadData(fullPath);
+    workspace->files.insert(fileName, newbie);
 }
 
 void MainWindow::on_unloadFile_btn_clicked()
@@ -63,6 +71,9 @@ void MainWindow::on_unloadFile_btn_clicked()
     if(reply == QMessageBox::No)
         return;
     int index = ui->fileList->currentIndex().row();
+    QString qStrToDelete = filesList[index];
+    std::strToDelete = qStrToDelete.toStdString();
+    workspace->files.erase(strToDelete);
     filesList.removeAt(index);
     filesModel->setStringList(filesList);
 }

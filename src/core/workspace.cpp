@@ -2,31 +2,35 @@
 
 using namespace Audio;
 
-Workspace::Workspace()
+Workspace::Workspace(MainWindow *parentWindow)
 {
+    this->device = alcOpenDevice(NULL);
+    this->context = alcCreateContext(device, NULL);
+    this->parentWindow = parentWindow;
+    this->tempo = 120;
+    this->time_signature = std::make_pair(4, 4);
 }
 
 Workspace::~Workspace()
 {
 }
 
-void Workspace::list_audio_devices(const ALCchar *devices)
+QStringList Workspace::list_capture_devices()
 {
+    const ALchar *devices = alcGetString(NULL, ALC_CAPTURE_DEVICE_SPECIFIER);
+    QStringList capt_lst;
     const ALCchar *device = devices, *next = devices + 1;
     std::size_t len = 0;
 
-    std::cout << "Devices available:" << std::endl;
-    std::cout << std::endl;
-
     while (device && *device != '\0' && next && *next != '\0')
     {
-        std::cout << device << std::endl;
+        capt_lst << device;
         len = strlen(device);
         device += (len + 1);
         next += (len + 2);
     }
 
-    std::cout << "-----------------" << std::endl;
+    return capt_lst;
 }
 
 void Workspace::play_all()
