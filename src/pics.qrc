@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/new/ctrl">
+        <file>pics/256-256-707bd27e3a6340527708217c6eadb7c9.png</file>
+        <file>pics/375.png</file>
+        <file>pics/Octicons-playback-pause.svg.png</file>
+        <file>pics/record-512.png</file>
+    </qresource>
+</RCC>

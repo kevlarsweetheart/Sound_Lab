@@ -7,13 +7,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->dial, SIGNAL(valueChanged(int)), ui->lcdNumber_pan, SLOT(display(int)));
-
-    this->workspace = new Audio::Workspace(this);
-
     filesModel = new QStringListModel;
     filesModel->setStringList(filesList);
-    ui->fileList->setModel(filesModel);
-    ui->fileList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->infoWindow->setModel(filesModel);
+    ui->infoWindow->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    currModel = 0;
+
+    devicesModel = new QStringListModel;
+    devicesModel->setStringList(devicesList);
+
+    ui->dial->setValue(50);
+    ui->verticalSlider->setValue(100);
+
+    ui->comboBox->addItem("Files");
+    ui->comboBox->addItem("Devices");
 }
 
 MainWindow::~MainWindow()
@@ -62,6 +69,9 @@ void MainWindow::on_loadFile_btn_clicked()
 
 void MainWindow::on_unloadFile_btn_clicked()
 {
+    if(currModel == 1)
+        return;
+
     if(filesList.size() == 0)
         return;
     QMessageBox::StandardButton reply;
@@ -76,4 +86,23 @@ void MainWindow::on_unloadFile_btn_clicked()
     workspace->files.erase(strToDelete);
     filesList.removeAt(index);
     filesModel->setStringList(filesList);
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    adjustComboBox(arg1);
+}
+
+void MainWindow::adjustComboBox(const QString &name)
+{
+    if(name == "Files")
+    {
+        currModel = 0;
+        ui->infoWindow->setModel(filesModel);
+    }
+    if(name == "Devices")
+    {
+        currModel = 1;
+        ui->infoWindow->setModel(devicesModel);
+    }
 }

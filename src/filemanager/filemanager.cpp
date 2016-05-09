@@ -1,12 +1,12 @@
 #include "filemanager.h"
 #include "ui_filemanager.h"
+#include <QSortFilterProxyModel>
 
 FileManager::FileManager(QDialog *parent) :
     QDialog(parent),
     ui(new Ui::FileManager)
 {
     ui->setupUi(this);
-    //QString rootPath = "/";
     dirModel = new QFileSystemModel(this);
     fileModel = new QFileSystemModel(this);
 
@@ -16,6 +16,7 @@ FileManager::FileManager(QDialog *parent) :
     fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files);
     fileModel->setRootPath(QDir::currentPath());
 
+    ui->treeView->setSortingEnabled(true);
     ui->treeView->setModel(dirModel);
     ui->listView->setModel(fileModel);
 }
@@ -33,6 +34,7 @@ void FileManager::on_treeView_clicked(const QModelIndex &index)
 
 void FileManager::on_cancel_btn_clicked()
 {
+    this->fullPath = "/cancel/";
     this->close();
 }
 
