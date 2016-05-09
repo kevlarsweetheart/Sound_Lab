@@ -64,7 +64,7 @@ void MainWindow::on_loadFile_btn_clicked()
     Audio::Audiofile *newbie = new Audio::Audiofile;
     newbie->file_name = fileName;
     newbie->loadData(fullPath);
-    workspace->files.insert(std::pair<std::string, Audio::Audiofile*>(fileName, newbie));
+    this->workspace->files.insert(std::pair<std::string, Audio::Audiofile*>(fileName, newbie));
 }
 
 void MainWindow::on_unloadFile_btn_clicked()
@@ -80,7 +80,7 @@ void MainWindow::on_unloadFile_btn_clicked()
 
     if(reply == QMessageBox::No)
         return;
-    int index = ui->fileList->currentIndex().row();
+    int index = ui->infoWindow->currentIndex().row();
     QString qStrToDelete = filesList[index];
     std::string strToDelete = qStrToDelete.toStdString();
     workspace->files.erase(strToDelete);

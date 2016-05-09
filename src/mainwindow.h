@@ -12,6 +12,14 @@
 #include "filemanager/filemanager.h"
 #include "core/audio.h"
 
+namespace Audio
+{
+    class Workspace;
+    class Track;
+    class Audiofile;
+    class FilePart;
+}
+
 namespace Ui {
 class MainWindow;
 }
@@ -35,6 +43,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Audio::Workspace *workspace;
 
     QStringListModel *filesModel;
     QStringListModel *devicesModel;
