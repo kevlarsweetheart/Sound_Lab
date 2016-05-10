@@ -23,8 +23,8 @@ namespace Audio
 }
 
 struct file_inf {
-    std::vector<int> data_left;
-    std::vector<int> data_right;
+    int *data_left;
+    int *data_right;
     ALsizei frequency;
     ALenum format;
     ALsizei size;

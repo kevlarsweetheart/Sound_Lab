@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -36,6 +37,10 @@ void MainWindow::on_loadFile_btn_clicked()
     fileManager.exec();
 
     std::string fullPath = fileManager.ReturnPath();
+
+    if(fullPath == "/cancel/")
+        return;
+
     std::string fileName;
 
     std::size_t found_pos = fullPath.find_last_of("/\\") + 1;
@@ -64,7 +69,8 @@ void MainWindow::on_loadFile_btn_clicked()
     Audio::Audiofile *newbie = new Audio::Audiofile;
     newbie->file_name = fileName;
     newbie->loadData(fullPath);
-    this->workspace->files.insert(std::pair<std::string, Audio::Audiofile*>(fileName, newbie));
+    workspace->files.insert(std::pair<std::string, Audio::Audiofile*>(fileName, newbie));
+    qDebug() << "Here";
 }
 
 void MainWindow::on_unloadFile_btn_clicked()

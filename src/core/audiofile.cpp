@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <QDebug>
 
 using namespace Audio;
 
@@ -49,21 +50,34 @@ bool Audiofile::loadData(std::string path)
 
     //Copy data to left and right channels
     int *intData = reinterpret_cast<int *>(data);
+    int len = this->fdata.size / sizeof intData[0];
+    this->fdata.data_left = new int [len];
+    this->fdata.data_right = new int [len];
     if(numChannels == 1)
     {
-        for(int i = 0; i < this->fdata.size / this->fdata.bit_depth; i++)
+        for(int i = 0; i < len; ++i)
         {
-            this->fdata.data_left.push_back(intData[i]);
-            this->fdata.data_right.push_back(intData[i]);
+            this->fdata.data_left[i] = intData[i];
+            this->fdata.data_right[i] = intData[i];
         }
     }
     if(numChannels == 2)
     {
-        for(int i = 0; i < this->fdata.size / this->fdata.bit_depth - 1; i += 2)
-            this->fdata.data_left.push_back(intData[i]);
-        for(int i = 1; i < this->fdata.size / this->fdata.bit_depth; i += 2)
-            this->fdata.data_right.push_back(intData[i]);
+        for(int i = 0; i < len; ++i)
+        {
+            if (i % 2 == 0)
+            {
+                this->fdata.data_left[i] = intData[i];
+                this->fdata.data_right[i] = 0;
+            }
+            else
+            {
+                this->fdata.data_right[i] = intData[i];
+                this->fdata.data_left[i] = 0;
+            }
+        }
     }
+
 }
 
 bool Audiofile::loadData(struct file_inf input)
@@ -78,5 +92,5 @@ struct file_inf Audiofile::getData()
 
 int Audiofile::getAudioLength()
 {
-    return this->fdata.data_right.size();
+    return this->fdata.size / sizeof this->fdata.data_left[0];
 }
