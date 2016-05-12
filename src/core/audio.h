@@ -12,6 +12,9 @@
 #include <QStringList>
 #include "../mainwindow.h"
 
+const int default_track_len = 3000;              //in seconds
+const int default_frequency = 44100;
+
 class MainWindow;
 
 namespace Audio
@@ -34,8 +37,8 @@ struct file_inf {
 class Audio::Audiofile
 {
 private:
-    struct file_inf fdata;
 public:
+    struct file_inf fdata;
     std::string file_name;
     Audiofile();
     ~Audiofile();
@@ -60,14 +63,17 @@ public:
 class Audio::Track
 {
 public:
-    Track(Workspace *parent);
+    Track(Workspace *parent, std::string _name, int len);
     ~Track();
     bool is_recordable;
     std::string track_name;
+    Audio::Audiofile compiled_file;
     void compile_track();
+    std::pair<ALuint, ALuint> getBuffs();
 private:
-    ALuint buffer[2];
+    ALuint Lbuffer, Rbuffer;
     Workspace *parent;
+    void updateBuffer();
 };
 
 class Audio::Workspace
@@ -81,14 +87,15 @@ public:
     void stop();
     void add_track();
     void delete_track();
-    bool addFile(std::string path);
+    int tracks_cnt();
     std::map<std::string, Audiofile*> files;
 private:
     MainWindow *parentWindow;
     ALCdevice *device;
     ALCcontext *context;
-    std::vector<ALuint *>alSources;
+    ALuint *alSources;
     std::vector<Track *> tracks;
+    std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;
 };

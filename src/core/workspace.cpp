@@ -9,6 +9,8 @@ Workspace::Workspace(MainWindow *parentWindow)
     this->parentWindow = parentWindow;
     this->tempo = 120;
     this->time_signature = std::make_pair(4, 4);
+
+    this->alSources = new ALuint;
 }
 
 Workspace::~Workspace()
@@ -50,7 +52,12 @@ void Workspace::stop()
 
 void Workspace::add_track()
 {
-
+    std::string newbie_name = "Track_" + std::to_string(this->tracks_cnt());
+    Audio::Track *newbie = new Audio::Track(this,
+                            newbie_name,
+                            default_track_len, default_frequency);
+    tracks.push_back(newbie);
+    track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size() - 1)));
 }
 
 void Workspace::delete_track()
@@ -58,7 +65,7 @@ void Workspace::delete_track()
 
 }
 
-bool Workspace::addFile(std::string path)
+int Workspace::tracks_cnt()
 {
-
+    return this->tracks.size();
 }
