@@ -19,6 +19,8 @@ FileManager::FileManager(QDialog *parent) :
     ui->treeView->setSortingEnabled(true);
     ui->treeView->setModel(dirModel);
     ui->listView->setModel(fileModel);
+
+    this->fullPath = "/cancel/";        //to aviod crash after close
 }
 
 FileManager::~FileManager()
@@ -34,7 +36,6 @@ void FileManager::on_treeView_clicked(const QModelIndex &index)
 
 void FileManager::on_cancel_btn_clicked()
 {
-    this->fullPath = "/cancel/";
     this->close();
 }
 

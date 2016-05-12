@@ -32,8 +32,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void adjustComboBox(const QString &name);
-
 private slots:
     void on_loadFile_btn_clicked();
 
@@ -42,6 +40,11 @@ private slots:
     void on_comboBox_currentIndexChanged(const QString &arg1);
 
 private:
+
+    void AdjustComboBox(const QString &name);
+    void AdjuctDragNDrop(bool flag); //true when filesModel, false when deviceModel;
+
+
     Ui::MainWindow *ui;
     Audio::Workspace *workspace;
 

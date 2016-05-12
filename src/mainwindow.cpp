@@ -8,13 +8,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->dial, SIGNAL(valueChanged(int)), ui->lcdNumber_pan, SLOT(display(int)));
+
+    workspace = new Audio::Workspace(this);
+
     filesModel = new QStringListModel;
     filesModel->setStringList(filesList);
+
     ui->infoWindow->setModel(filesModel);
     ui->infoWindow->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->infoWindow->setSelectionMode(QAbstractItemView::SingleSelection);
+    AdjuctDragNDrop(true);
     currModel = 0;
 
     devicesModel = new QStringListModel;
+    devicesList = workspace->list_capture_devices();
     devicesModel->setStringList(devicesList);
 
     ui->dial->setValue(50);
@@ -70,7 +77,6 @@ void MainWindow::on_loadFile_btn_clicked()
     newbie->file_name = fileName;
     newbie->loadData(fullPath);
     workspace->files.insert(std::pair<std::string, Audio::Audiofile*>(fileName, newbie));
-    qDebug() << "Here";
 }
 
 void MainWindow::on_unloadFile_btn_clicked()
@@ -96,10 +102,18 @@ void MainWindow::on_unloadFile_btn_clicked()
 
 void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
 {
-    adjustComboBox(arg1);
+    AdjustComboBox(arg1);
 }
 
-void MainWindow::adjustComboBox(const QString &name)
+void MainWindow::AdjuctDragNDrop(bool flag)
+{
+    //not finished yet
+    ui->infoWindow->setDragEnabled(flag);
+    ui->infoWindow->setAcceptDrops(flag);
+    ui->infoWindow->setDropIndicatorShown(flag);
+}
+
+void MainWindow::AdjustComboBox(const QString &name)
 {
     if(name == "Files")
     {
@@ -112,3 +126,4 @@ void MainWindow::adjustComboBox(const QString &name)
         ui->infoWindow->setModel(devicesModel);
     }
 }
+
