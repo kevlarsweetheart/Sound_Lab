@@ -82,12 +82,13 @@ public:
     Workspace(MainWindow *parentWindow);
     ~Workspace();
     QStringList list_capture_devices(); //Returns a QStringList of available capture devices
-    void play_all();
+    void play();
     void pause();
     void stop();
     void add_track();
     void delete_track();
     int tracks_cnt();
+    void init_source(ALuint src, ALuint buff, int x, int y, int z);
     std::map<std::string, Audiofile*> files;
 private:
     MainWindow *parentWindow;
@@ -98,6 +99,9 @@ private:
     std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;
+    ALfloat listener_ori[] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
+    std::vector<ALuint> source_vec;
+    void update_source_arr(); //Updates ALuint array with sources for openAL functions
 };
 
 #endif // AUDIO_H

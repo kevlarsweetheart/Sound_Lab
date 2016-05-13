@@ -10,7 +10,9 @@ Workspace::Workspace(MainWindow *parentWindow)
     this->tempo = 120;
     this->time_signature = std::make_pair(4, 4);
 
-    this->alSources = new ALuint;
+    alListener3f(AL_POSITION, 0, 0, 0);
+    alListener3f(AL_VELOCITY, 0, 0, 0);
+    alListenerfv(AL_ORIENTATION, listener_ori);
 }
 
 Workspace::~Workspace()
@@ -35,19 +37,19 @@ QStringList Workspace::list_capture_devices()
     return capt_lst;
 }
 
-void Workspace::play_all()
+void Workspace::play()
 {
-
+    alSourcePlayv((ALsizei)source_vec.size(), alSources);
 }
 
 void Workspace::pause()
 {
-
+    alSourcePausev((ALsizei)source_vec.size(), alSources);
 }
 
 void Workspace::stop()
 {
-
+    alSourceStopv((ALsizei)source_vec.size(), alSources);
 }
 
 void Workspace::add_track()
@@ -56,8 +58,18 @@ void Workspace::add_track()
     Audio::Track *newbie = new Audio::Track(this,
                             newbie_name,
                             default_track_len, default_frequency);
-    tracks.push_back(newbie);
     track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size() - 1)));
+
+    ALuint *buff_source = new ALuint [2];
+    alGenSources((ALuint)2, buff_source);
+    init_source(buff_source[0], std::get<0>(newbie->getBuffs()), -1, 0, 0);
+    init_source(buff_source[1], std::get<1>(newbie->getBuffs()), 1, 0, 0);
+    source_vec.push_back(buff_source[0]);
+    source_vec.push_back(buff_source[1]);
+    delete [] buff_source;
+
+    update_source_arr();
+    tracks.push_back(newbie);
 }
 
 void Workspace::delete_track()
@@ -68,4 +80,22 @@ void Workspace::delete_track()
 int Workspace::tracks_cnt()
 {
     return this->tracks.size();
+}
+
+void Workspace::init_source(ALuint src, ALuint buff, int x, int y, int z)
+{
+    alSourcef(src, AL_PITCH, 1);
+    alSourcef(src, AL_GAIN, 1);
+    alSource3f(src, AL_POSITION, x, y, z);
+    alSource3f(src, AL_VELOCITY, 0, 0, 0);
+    alSourcei(src, AL_LOOPING, AL_FALSE);
+    alSourcei(src, AL_BUFFER, buff);
+}
+
+void Workspace::update_source_arr()
+{
+    std::size_t len = source_vec.size();
+    alSources = new ALuint [len];
+    for (std::size_t i = 0; i < len; ++i)
+        alSources[i] = source_vec[i];
 }
