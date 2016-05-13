@@ -11,9 +11,9 @@
 #include <map>
 #include <QStringList>
 #include "../mainwindow.h"
+#include <QDebug>
 
-const int default_track_len = 3000;              //in seconds
-const int default_frequency = 44100;
+#define default_frequency 44100
 
 class MainWindow;
 
@@ -91,6 +91,7 @@ public:
     void init_source(ALuint src, ALuint buff, int x, int y, int z);
     std::map<std::string, Audiofile*> files;
 private:
+    int default_track_len = 3000;              //in seconds
     MainWindow *parentWindow;
     ALCdevice *device;
     ALCcontext *context;

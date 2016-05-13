@@ -131,6 +131,7 @@ void MainWindow::AdjustComboBox(const QString &name)
 void MainWindow::on_addTrack_btn_clicked()
 {
     workspace->add_track();
+    ui->statusBar->showMessage("Added track " + QString::number(workspace->tracks_cnt()), 3000);
 }
 
 void MainWindow::on_play_btn_clicked()
