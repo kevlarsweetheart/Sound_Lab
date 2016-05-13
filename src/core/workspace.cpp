@@ -57,10 +57,11 @@ void Workspace::add_track()
     std::string newbie_name = "Track_" + std::to_string(this->tracks_cnt());
     Audio::Track *newbie = new Audio::Track(this,
                             newbie_name,
-                            default_track_len, default_frequency);
+                            default_track_len * default_frequency, default_frequency);
     track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size() + 1)));
 
     ALuint *buff_source = new ALuint [2];
+
     alGenSources((ALuint)2, buff_source);
     init_source(buff_source[0], std::get<0>(newbie->getBuffs()), -1, 0, 0);
     init_source(buff_source[1], std::get<1>(newbie->getBuffs()), 1, 0, 0);

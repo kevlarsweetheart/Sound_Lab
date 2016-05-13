@@ -13,11 +13,16 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     struct file_inf buf;
     buf.bit_depth = 16;
     buf.frequency = frequency;
-    buf.data_left = new int(len);
-    buf.data_right = new int(len);
-    memset(buf.data_left, 0, len * sizeof(int));
-    memset(buf.data_right, 0, len * sizeof(int));
-    buf.size = len * sizeof(int);
+    buf.data_left = new int[len];
+    buf.data_right = new int[len];
+    //memset(buf.data_left, 0, len*sizeof(int));
+    //memset(buf.data_right, 0, len*sizeof(int));
+    for(int i = 0; i < len; i++)
+    {
+        buf.data_left[i] = 0;
+        buf.data_right[i] = 0;
+    }
+    buf.size = len*sizeof(int);
     buf.format = 4355;
     this->compiled_file.loadData(buf);
 

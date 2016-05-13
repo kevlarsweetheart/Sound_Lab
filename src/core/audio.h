@@ -11,9 +11,9 @@
 #include <map>
 #include <QStringList>
 #include "../mainwindow.h"
+#include <QDebug>
 
-const int default_track_len = 3000;              //in seconds
-const int default_frequency = 44100;
+#define default_frequency 44100
 
 class MainWindow;
 
@@ -91,17 +91,16 @@ public:
     void init_source(ALuint src, ALuint buff, int x, int y, int z);
     std::map<std::string, Audiofile*> files;
 private:
+    int default_track_len = 300;              //in seconds
     MainWindow *parentWindow;
     ALCdevice *device;
     ALCcontext *context;
-    ALuint *alSources;
     std::vector<Track *> tracks;
     std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;
     ALfloat listener_ori[6] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
     std::vector<ALuint> source_vec;
-    void update_source_arr(); //Updates ALuint array with sources for openAL functions
 };
 
 #endif // AUDIO_H

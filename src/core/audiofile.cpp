@@ -82,6 +82,9 @@ bool Audiofile::loadData(std::string path)
 
 bool Audiofile::loadData(struct file_inf input)
 {
+    int len = input.size * sizeof(int);
+    this->fdata.data_left = new int[len];
+    this->fdata.data_right = new int[len];
     this->fdata = input;
 }
 
