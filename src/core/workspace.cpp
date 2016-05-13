@@ -58,7 +58,7 @@ void Workspace::add_track()
     Audio::Track *newbie = new Audio::Track(this,
                             newbie_name,
                             default_track_len, default_frequency);
-    track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size() - 1)));
+    track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size() + 1)));
 
     ALuint *buff_source = new ALuint [2];
     alGenSources((ALuint)2, buff_source);
@@ -70,6 +70,7 @@ void Workspace::add_track()
 
     update_source_arr();
     tracks.push_back(newbie);
+
 }
 
 void Workspace::delete_track()

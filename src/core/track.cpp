@@ -7,6 +7,7 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     this->parent = parent;
     this->track_name = _name;
     this->compiled_file.file_name = _name + "_WAVE";
+    this->is_recordable = true;
 
     //Building innner audiofile
     struct file_inf buf;
@@ -16,6 +17,7 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     buf.data_right = new int(len);
     memset(buf.data_left, 0, len*sizeof(int));
     memset(buf.data_right, 0, len*sizeof(int));
+    buf.size = len*sizeof(int);
     buf.format = 4355;
     this->compiled_file.loadData(buf);
 
