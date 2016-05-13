@@ -91,7 +91,7 @@ public:
     void init_source(ALuint src, ALuint buff, int x, int y, int z);
     std::map<std::string, Audiofile*> files;
 private:
-    int default_track_len = 3000;              //in seconds
+    int default_track_len = 300;              //in seconds
     MainWindow *parentWindow;
     ALCdevice *device;
     ALCcontext *context;
