@@ -93,6 +93,33 @@ struct file_inf Audiofile::getData()
     return this->fdata;
 }
 
+file_inf Audiofile::getData(int start_index, int end_index)
+{
+    struct file_inf aux;
+    aux.bit_depth = fdata.bit_depth;;
+    aux.format = fdata.format;
+    aux.frequency = fdata.frequency;
+
+    std::size_t audio_len = getAudioLength();
+    if(end_index >= audio_len)
+        end_index = audio_len - 1;
+    if(start_index >= audio_len)
+        start_idex = audio_len - 1;
+    std::size_t part_time = end_index - start_index;;
+    aux.size = (part_time) * sizeof(int);
+
+    aux.data_left = new int[part_time];
+    aux.data_right = new int[part_time];
+
+    for(int i = start_index, j = 0; i < end_index; i++)
+    {
+        aux.data_left[j] = fdata.data_left[i];
+        aux.data_right[j] = fdata.data_right[i];
+        j++;
+    }
+    return aux;
+}
+
 int Audiofile::getAudioLength()
 {
     return this->fdata.size / sizeof this->fdata.data_left[0];

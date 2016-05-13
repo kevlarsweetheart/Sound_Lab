@@ -46,14 +46,16 @@ public:
     bool loadData(std::string path); //Loads data from existing external file
     bool loadData(struct file_inf input); //Loads data from internal not saved source
     struct file_inf getData(); //Returns data for intermediate editings
+    struct file_inf getData(int start_index, int end_index);
     int getAudioLength(); //Returns length of data array of audiofile
 };
 
 class Audio::FilePart
 {
 public:
-    FilePart(Audiofile *parentFile);
+    FilePart(Audiofile *parentFile, QString _name);
     ~FilePart();
+    QString part_name;
     int get_end_time(); //Returns the right bound of file part in the track
     int get_lenght(); //Returns length of a file part in number of elements in data array
     int start_time, file_start, file_end;
@@ -63,13 +65,15 @@ public:
 class Audio::Track
 {
 public:
-    Track(Workspace *parent, std::string _name, int len, int frequency);
+    Track(Audio::Workspace *parent, std::string _name, int len, int frequency);
     ~Track();
     bool is_recordable;
     std::string track_name;
     Audio::Audiofile compiled_file;
     void compile_track();
     std::pair<ALuint, ALuint> getBuffs();
+    std::vector<Audio::FilePart> sound_bricks;
+    void pushBrick(Audio::Audiofile *_file, QString _name);
 private:
     ALuint Lbuffer, Rbuffer;
     Workspace *parent;

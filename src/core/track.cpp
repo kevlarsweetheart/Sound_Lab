@@ -15,13 +15,8 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     buf.frequency = frequency;
     buf.data_left = new int[len];
     buf.data_right = new int[len];
-    //memset(buf.data_left, 0, len*sizeof(int));
-    //memset(buf.data_right, 0, len*sizeof(int));
-    for(int i = 0; i < len; i++)
-    {
-        buf.data_left[i] = 0;
-        buf.data_right[i] = 0;
-    }
+    memset(buf.data_left, 0, len*sizeof(int));
+    memset(buf.data_right, 0, len*sizeof(int));
     buf.size = len*sizeof(int);
     buf.format = 4355;
     this->compiled_file.loadData(buf);
@@ -37,12 +32,22 @@ Track::~Track()
 
 void Track::compile_track()
 {
-
+    std::size_t bound = sound_bricks.size();
+    for (std::size_t i = 0; i < bound; ++i)
+    {
+        struct file_inf aux = sound_bricks[i].parent.getData(sound_bricks[i].file_start,
+                                                             sound_bricks[i].file_end);
+    }
 }
 
 std::pair<ALuint, ALuint> Track::getBuffs()
 {
     return std::make_pair(this->Lbuffer, this->Rbuffer);
+}
+
+void Track::pushBrick(Audiofile *_file, QString _name)
+{
+    sound_bricks.push_back(FilePart(_file, _name));
 }
 
 void Track::updateBuffer()
