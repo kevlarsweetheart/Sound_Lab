@@ -127,3 +127,21 @@ void MainWindow::AdjustComboBox(const QString &name)
     }
 }
 
+
+void MainWindow::on_addTrack_btn_clicked()
+{
+    workspace->add_track();
+}
+
+void MainWindow::on_play_btn_clicked()
+{
+    if(ui->play_btn->isEnabled())
+        workspace->pause();
+    else
+        workspace->play();
+}
+
+void MainWindow::on_stop_btn_clicked()
+{
+    workspace->stop();
+}

@@ -2,7 +2,7 @@
 
 using namespace Audio;
 
-Track::Track(Workspace *parent, std::string _name, int len)
+Track::Track(Workspace *parent, std::string _name, int len, int frequency)
 {
     this->parent = parent;
     this->track_name = _name;
@@ -11,7 +11,7 @@ Track::Track(Workspace *parent, std::string _name, int len)
     //Building innner audiofile
     struct file_inf buf;
     buf.bit_depth = 16;
-    buf.frequency = 44100;
+    buf.frequency = frequency;
     buf.data_left = new int(len);
     buf.data_right = new int(len);
     memset(buf.data_left, 0, len*sizeof(int));
@@ -20,8 +20,8 @@ Track::Track(Workspace *parent, std::string _name, int len)
     this->compiled_file.loadData(buf);
 
     //Init buffers
-    alGenBuffers(1, Lbuffer);
-    alGenBuffers(1, Rbuffer);
+    alGenBuffers(1, &Lbuffer);
+    alGenBuffers(1, &Rbuffer);
 }
 
 Track::~Track()

@@ -63,7 +63,7 @@ public:
 class Audio::Track
 {
 public:
-    Track(Workspace *parent, std::string _name, int len);
+    Track(Workspace *parent, std::string _name, int len, int frequency);
     ~Track();
     bool is_recordable;
     std::string track_name;
@@ -99,7 +99,7 @@ private:
     std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;
-    ALfloat listener_ori[] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
+    ALfloat listener_ori[6] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
     std::vector<ALuint> source_vec;
     void update_source_arr(); //Updates ALuint array with sources for openAL functions
 };

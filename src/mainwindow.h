@@ -39,6 +39,12 @@ private slots:
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
 
+    void on_addTrack_btn_clicked();
+
+    void on_play_btn_clicked();
+
+    void on_stop_btn_clicked();
+
 private:
 
     void AdjustComboBox(const QString &name);

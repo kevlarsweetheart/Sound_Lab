@@ -108,6 +108,9 @@
            <iconset resource="pics.qrc">
             <normaloff>:/new/ctrl/pics/375.png</normaloff>:/new/ctrl/pics/375.png</iconset>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
           <property name="flat">
            <bool>false</bool>
           </property>
@@ -139,6 +142,9 @@
             <width>20</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
           <property name="autoRepeatDelay">
            <number>300</number>
