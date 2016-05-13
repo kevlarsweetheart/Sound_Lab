@@ -39,17 +39,17 @@ QStringList Workspace::list_capture_devices()
 
 void Workspace::play()
 {
-    alSourcePlayv((ALsizei)source_vec.size(), alSources);
+    alSourcePlayv((ALsizei)source_vec.size(), source_vec.data());
 }
 
 void Workspace::pause()
 {
-    alSourcePausev((ALsizei)source_vec.size(), alSources);
+    alSourcePausev((ALsizei)source_vec.size(), source_vec.data());
 }
 
 void Workspace::stop()
 {
-    alSourceStopv((ALsizei)source_vec.size(), alSources);
+    alSourceStopv((ALsizei)source_vec.size(), source_vec.data());
 }
 
 void Workspace::add_track()
@@ -68,7 +68,6 @@ void Workspace::add_track()
     source_vec.push_back(buff_source[1]);
     delete [] buff_source;
 
-    update_source_arr();
     tracks.push_back(newbie);
 
 }
@@ -91,12 +90,4 @@ void Workspace::init_source(ALuint src, ALuint buff, int x, int y, int z)
     alSource3f(src, AL_VELOCITY, 0, 0, 0);
     alSourcei(src, AL_LOOPING, AL_FALSE);
     alSourcei(src, AL_BUFFER, buff);
-}
-
-void Workspace::update_source_arr()
-{
-    std::size_t len = source_vec.size();
-    alSources = new ALuint [len];
-    for (std::size_t i = 0; i < len; ++i)
-        alSources[i] = source_vec[i];
 }

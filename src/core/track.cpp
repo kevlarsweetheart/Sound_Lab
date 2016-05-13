@@ -15,9 +15,9 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     buf.frequency = frequency;
     buf.data_left = new int(len);
     buf.data_right = new int(len);
-    memset(buf.data_left, 0, len*sizeof(int));
-    memset(buf.data_right, 0, len*sizeof(int));
-    buf.size = len*sizeof(int);
+    memset(buf.data_left, 0, len * sizeof(int));
+    memset(buf.data_right, 0, len * sizeof(int));
+    buf.size = len * sizeof(int);
     buf.format = 4355;
     this->compiled_file.loadData(buf);
 
