@@ -17,10 +17,10 @@ FilePart::~FilePart()
 
 int FilePart::get_lenght()
 {
-    return this->file_end - this->file_start + 1;
+    return this->file_end - this->file_start;
 }
 
 int FilePart::get_end_time()
 {
-    return this->start_time + this->get_lenght() - 1;
+    return this->start_time + this->get_lenght();
 }

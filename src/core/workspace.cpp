@@ -6,6 +6,7 @@ Workspace::Workspace(MainWindow *parentWindow)
 {
     this->device = alcOpenDevice(NULL);
     this->context = alcCreateContext(device, NULL);
+    alcMakeContextCurrent(context);
     this->parentWindow = parentWindow;
     this->tempo = 120;
     this->time_signature = std::make_pair(4, 4);
@@ -13,6 +14,8 @@ Workspace::Workspace(MainWindow *parentWindow)
     alListener3f(AL_POSITION, 0, 0, 0);
     alListener3f(AL_VELOCITY, 0, 0, 0);
     alListenerfv(AL_ORIENTATION, listener_ori);
+
+    check_errors();
 }
 
 Workspace::~Workspace()
@@ -70,7 +73,6 @@ void Workspace::add_track()
     delete [] buff_source;
 
     tracks.push_back(newbie);
-
 }
 
 void Workspace::delete_track()
@@ -97,4 +99,16 @@ void Workspace::close_openal()
 {
     alcDestroyContext(context);
     alcCloseDevice(device);
+}
+
+void Workspace::check_errors()
+{
+    ALenum err_al = alGetError();
+    ALenum err_alc = alcGetError(device);
+    char* err_al_str = new char[20];
+    err_al_str = (char*)alGetString(err_al);
+    char* err_alc_str = new char[20];
+    err_alc_str = (char*)alcGetString(device, err_alc);
+    qDebug() << err_alc_str;
+    qDebug() << err_al_str;
 }
