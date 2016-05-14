@@ -81,7 +81,7 @@ void MainWindow::on_loadFile_btn_clicked()
 
     Audio::Audiofile *newbie = new Audio::Audiofile;
     newbie->file_name = fileName;
-    newbie->loadData(fullPath);
+    newbie->load_data(fullPath);
     workspace->files.insert(std::pair<std::string, Audio::Audiofile*>(fileName, newbie));
 }
 
@@ -176,5 +176,5 @@ void MainWindow::on_addSound2Truck_btn_clicked()
     QString qFilePartName = filesList[index];
     std::string filePartName = qFilePartName.toStdString();
     qFilePartName += "_brick";
-    workspace->tracks[workspace->tracks_cnt() - 1]->pushBrick(workspace->files[filePartName], qFilePartName);
+    workspace->tracks[workspace->tracks_cnt() - 1]->push_brick  (workspace->files[filePartName], qFilePartName);
 }

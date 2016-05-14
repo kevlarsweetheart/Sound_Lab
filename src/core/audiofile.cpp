@@ -14,7 +14,7 @@ Audiofile::~Audiofile()
 {
 }
 
-void Audiofile::getName(std::string path)
+void Audiofile::get_name(std::string path)
 {
     std::size_t found_pos = path.find_last_of("/\\") + 1;
     if (found_pos <= path.length())
@@ -23,7 +23,7 @@ void Audiofile::getName(std::string path)
         this->file_name = path;
 }
 
-bool Audiofile::loadData(std::string path)
+bool Audiofile::load_data(std::string path)
 {
     //Convert absolute path into ALbyte format
     ALbyte *file_name = new ALbyte[path.size() + 1];
@@ -35,44 +35,44 @@ bool Audiofile::loadData(std::string path)
     ALboolean loop;
     alutLoadWAVFile(file_name, &(this->fdata.format), &data, &(this->fdata.size),
                     &(this->fdata.frequency), &loop);
-    const char *auxPath = path.c_str();
+    const char *aux_path = path.c_str();
 
-    short numChannels;
+    short num_channels;
 
     FILE *fp;
-    fp = fopen(auxPath, "r");
+    fp = fopen(aux_path, "r");
     fseek(fp, 22, SEEK_SET);
-    fread(&numChannels, sizeof(short), 1, fp);
+    fread(&num_channels, sizeof(short), 1, fp);
 
     fseek(fp, 34, SEEK_SET);
     fread(&(this->fdata.bit_depth), sizeof(short), 1, fp);
     fclose(fp);
 
     //Copy data to left and right channels
-    int *intData = reinterpret_cast<int *>(data);
-    int len = this->fdata.size / sizeof intData[0];
+    int *int_data = reinterpret_cast<int *>(data);
+    int len = this->fdata.size / sizeof int_data[0];
     this->fdata.data_left = new int [len];
     this->fdata.data_right = new int [len];
-    if(numChannels == 1)
+    if(num_channels == 1)
     {
         for(int i = 0; i < len; ++i)
         {
-            this->fdata.data_left[i] = intData[i];
-            this->fdata.data_right[i] = intData[i];
+            this->fdata.data_left[i] = int_data[i];
+            this->fdata.data_right[i] = int_data[i];
         }
     }
-    if(numChannels == 2)
+    if(num_channels == 2)
     {
         for(int i = 0; i < len; ++i)
         {
             if (i % 2 == 0)
             {
-                this->fdata.data_left[i] = intData[i];
+                this->fdata.data_left[i] = int_data[i];
                 this->fdata.data_right[i] = 0;
             }
             else
             {
-                this->fdata.data_right[i] = intData[i];
+                this->fdata.data_right[i] = int_data[i];
                 this->fdata.data_left[i] = 0;
             }
         }
@@ -80,7 +80,7 @@ bool Audiofile::loadData(std::string path)
 
 }
 
-bool Audiofile::loadData(struct file_inf input)
+bool Audiofile::load_data(struct file_inf input)
 {
     int len = input.size * sizeof(int);
     this->fdata.data_left = new int[len];
@@ -88,19 +88,19 @@ bool Audiofile::loadData(struct file_inf input)
     this->fdata = input;
 }
 
-struct file_inf Audiofile::getData()
+struct file_inf Audiofile::get_data()
 {
     return this->fdata;
 }
 
-file_inf Audiofile::getData(int start_index, int end_index)
+file_inf Audiofile::get_data(int start_index, int end_index)
 {
     struct file_inf aux;
     aux.bit_depth = fdata.bit_depth;;
     aux.format = fdata.format;
     aux.frequency = fdata.frequency;
 
-    std::size_t audio_len = getAudioLength();
+    std::size_t audio_len = get_audio_length();
     if(end_index >= audio_len)
         end_index = audio_len - 1;
     if(start_index >= audio_len)
@@ -120,7 +120,7 @@ file_inf Audiofile::getData(int start_index, int end_index)
     return aux;
 }
 
-int Audiofile::getAudioLength()
+int Audiofile::get_audio_length()
 {
     return this->fdata.size / sizeof this->fdata.data_left[0];
 }

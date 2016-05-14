@@ -42,24 +42,24 @@ public:
     std::string file_name;
     Audiofile();
     ~Audiofile();
-    void getName(std::string path); //Gets file name from the path
-    bool loadData(std::string path); //Loads data from existing external file
-    bool loadData(struct file_inf input); //Loads data from internal not saved source
-    struct file_inf getData(); //Returns data for intermediate editings
-    struct file_inf getData(int start_index, int end_index);
-    int getAudioLength(); //Returns length of data array of audiofile
+    void get_name(std::string path); //Gets file name from the path
+    bool load_data(std::string path); //Loads data from existing external file
+    bool load_data(struct file_inf input); //Loads data from internal not saved source
+    struct file_inf get_data(); //Returns data for intermediate editings
+    struct file_inf get_data(int start_index, int end_index);
+    int get_audio_length(); //Returns length of data array of audiofile
 };
 
 class Audio::FilePart
 {
 public:
-    FilePart(Audiofile *parentFile, QString _name);
+    FilePart(Audiofile *parent_file, QString _name);
     ~FilePart();
     QString part_name;
     int get_end_time(); //Returns the right bound of file part in the track
     int get_lenght(); //Returns length of a file part in number of elements in data array
     int start_time, file_start, file_end;
-    Audiofile *parentFile;
+    Audiofile *parent_file;
 };
 
 class Audio::Track
@@ -71,19 +71,19 @@ public:
     std::string track_name;
     Audio::Audiofile compiled_file;
     void compile_track();
-    std::pair<ALuint, ALuint> getBuffs();
+    std::pair<ALuint, ALuint> get_buffs();
     std::vector<Audio::FilePart> sound_bricks;
-    void pushBrick(Audio::Audiofile *_file, QString _name);
+    void push_brick(Audio::Audiofile *_file, QString _name);
 private:
     ALuint Lbuffer, Rbuffer;
     Workspace *parent;
-    void updateBuffer();
+    void update_buffer();
 };
 
 class Audio::Workspace
 {
 public:
-    Workspace(MainWindow *parentWindow);
+    Workspace(MainWindow *parent_window);
     ~Workspace();
     QStringList list_capture_devices(); //Returns a QStringList of available capture devices
     void play();
@@ -101,7 +101,7 @@ private:
     ALCdevice *device;
     ALCcontext *context;
     int default_track_len = 300;              //in seconds
-    MainWindow *parentWindow;
+    MainWindow *parent_window;
     std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;

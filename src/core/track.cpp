@@ -24,7 +24,7 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     }
     buf.size = len*sizeof(int);
     buf.format = 4355;
-    this->compiled_file.loadData(buf);
+    this->compiled_file.load_data(buf);
 
     //Init buffers
     alGenBuffers(1, &Lbuffer);
@@ -42,7 +42,7 @@ void Track::compile_track()
     std::size_t bound = sound_bricks.size();
     for (std::size_t i = 0; i < bound; ++i)
     {
-        struct file_inf aux = sound_bricks[i].parentFile->getData(sound_bricks[i].file_start,
+        struct file_inf aux = sound_bricks[i].parent_file->get_data(sound_bricks[i].file_start,
                                                              sound_bricks[i].file_end);
         for(int j1 = 0, j2 = sound_bricks[i].start_time; j1 < sound_bricks[i].get_lenght(); j1++)
         {
@@ -56,28 +56,28 @@ void Track::compile_track()
 }
 
 
-std::pair<ALuint, ALuint> Track::getBuffs()
+std::pair<ALuint, ALuint> Track::get_buffs()
 {
     return std::make_pair(this->Lbuffer, this->Rbuffer);
 }
 
-void Track::pushBrick(Audiofile *_file, QString _name)
+void Track::push_brick(Audiofile *_file, QString _name)
 {
     sound_bricks.push_back(FilePart(_file, _name));
     compile_track();
-    //updateBuffer();
+    //update_buffer();
 }
 
-void Track::updateBuffer()
+void Track::update_buffer()
 {
     alBufferData(this->Lbuffer, this->compiled_file.fdata.format,
                  this->compiled_file.fdata.data_left,
-                 this->compiled_file.getAudioLength() * sizeof this->compiled_file.fdata.data_left[0],
+                 this->compiled_file.get_audio_length() * sizeof this->compiled_file.fdata.data_left[0],
             this->compiled_file.fdata.frequency);
 
     alBufferData(this->Rbuffer, this->compiled_file.fdata.format,
                  this->compiled_file.fdata.data_right,
-                 this->compiled_file.getAudioLength() * sizeof this->compiled_file.fdata.data_right[0],
+                 this->compiled_file.get_audio_length() * sizeof this->compiled_file.fdata.data_right[0],
             this->compiled_file.fdata.frequency);
 
     parent->check_errors();

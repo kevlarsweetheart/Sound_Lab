@@ -2,12 +2,12 @@
 
 using namespace Audio;
 
-Workspace::Workspace(MainWindow *parentWindow)
+Workspace::Workspace(MainWindow *parent_window)
 {
     this->device = alcOpenDevice(NULL);
     this->context = alcCreateContext(device, NULL);
     alcMakeContextCurrent(context);
-    this->parentWindow = parentWindow;
+    this->parent_window = parent_window;
     this->tempo = 120;
     this->time_signature = std::make_pair(4, 4);
 
@@ -66,8 +66,8 @@ void Workspace::add_track()
     ALuint *buff_source = new ALuint [2];
 
     alGenSources((ALuint)2, buff_source);
-    init_source(buff_source[0], std::get<0>(newbie->getBuffs()), -1, 0, 0);
-    init_source(buff_source[1], std::get<1>(newbie->getBuffs()), 1, 0, 0);
+    init_source(buff_source[0], std::get<0>(newbie->get_buffs()), -1, 0, 0);
+    init_source(buff_source[1], std::get<1>(newbie->get_buffs()), 1, 0, 0);
     source_vec.push_back(buff_source[0]);
     source_vec.push_back(buff_source[1]);
     delete [] buff_source;
