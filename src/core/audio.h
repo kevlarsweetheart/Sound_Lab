@@ -11,7 +11,7 @@
 #include <map>
 #include <QStringList>
 #include "../mainwindow.h"
-#include <QDebug>
+#include <qt5/QtCore/QDebug>
 
 #define default_frequency 44100
 
