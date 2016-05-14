@@ -20,12 +20,9 @@ HEADERS += mainwindow.h \
     core/audio.h \
     filemanager/filemanager.h \
 
-
-
 FORMS += \
     mainwindow.ui \
     filemanager/filemanager.ui
-
 
 LIBS += -L/usr/lib/x86_64-linux-gnu/ -lopenal -lalut
 
