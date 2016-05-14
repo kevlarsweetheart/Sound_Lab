@@ -2,12 +2,12 @@
 
 using namespace Audio;
 
-FilePart::FilePart(Audiofile *parentFile, QString _name)
+FilePart::FilePart(Audiofile *parent_file, QString _name)
 {
-    this->parentFile = parentFile;
+    this->parent_file = parent_file;
     this->start_time = 0;
     this->file_start = 0;
-    this->file_end = parentFile->getAudioLength() - 1;
+    this->file_end = parent_file->get_audio_length() - 1;
     this->part_name = _name;
 }
 
