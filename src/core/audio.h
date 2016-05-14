@@ -96,11 +96,12 @@ public:
     std::map<std::string, Audiofile*> files;
     std::vector<Track *> tracks;
     void close_openal();
+    void check_errors();
 private:
-    int default_track_len = 300;              //in seconds
-    MainWindow *parentWindow;
     ALCdevice *device;
     ALCcontext *context;
+    int default_track_len = 300;              //in seconds
+    MainWindow *parentWindow;
     std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;

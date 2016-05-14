@@ -145,12 +145,17 @@ void MainWindow::on_addTrack_btn_clicked()
 
 void MainWindow::on_play_btn_clicked()
 {
-    if(!(ui->play_btn->isEnabled()))
+    if(!(ui->play_btn->isChecked()))
+    {
         workspace->pause();
+        qDebug() << "Pausing";
+    }
     else
+    {
         workspace->play();
+        qDebug() << "Playing";
+    }
 }
-
 
 void MainWindow::on_stop_btn_clicked()
 {
