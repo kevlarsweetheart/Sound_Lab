@@ -92,3 +92,9 @@ void Workspace::init_source(ALuint src, ALuint buff, int x, int y, int z)
     alSourcei(src, AL_LOOPING, AL_FALSE);
     alSourcei(src, AL_BUFFER, buff);
 }
+
+void Workspace::close_openal()
+{
+    alcDestroyContext(context);
+    alcCloseDevice(device);
+}

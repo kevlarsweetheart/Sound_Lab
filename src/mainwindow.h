@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QStringListModel>
 #include <QMessageBox>
+#include <QCloseEvent>
 #include "filemanager/filemanager.h"
 #include "core/audio.h"
 
@@ -27,6 +28,8 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+protected:
+    void closeWindow(QCloseEvent *event);
 
 public:
     explicit MainWindow(QWidget *parent = 0);

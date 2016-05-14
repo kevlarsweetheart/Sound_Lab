@@ -2,6 +2,12 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
+void MainWindow::closeWindow(QCloseEvent *event)
+{
+    workspace->close_openal();
+    event->accept();
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -139,7 +145,7 @@ void MainWindow::on_addTrack_btn_clicked()
 
 void MainWindow::on_play_btn_clicked()
 {
-    if(ui->play_btn->isEnabled())
+    if(!(ui->play_btn->isEnabled()))
         workspace->pause();
     else
         workspace->play();

@@ -24,6 +24,7 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     //Init buffers
     alGenBuffers(1, &Lbuffer);
     alGenBuffers(1, &Rbuffer);
+
 }
 
 Track::~Track()

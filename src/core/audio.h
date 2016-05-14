@@ -95,6 +95,7 @@ public:
     void init_source(ALuint src, ALuint buff, int x, int y, int z);
     std::map<std::string, Audiofile*> files;
     std::vector<Track *> tracks;
+    void close_openal();
 private:
     int default_track_len = 300;              //in seconds
     MainWindow *parentWindow;
