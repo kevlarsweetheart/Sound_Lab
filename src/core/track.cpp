@@ -35,8 +35,14 @@ void Track::compile_track()
     std::size_t bound = sound_bricks.size();
     for (std::size_t i = 0; i < bound; ++i)
     {
-        struct file_inf aux = sound_bricks[i].parent.getData(sound_bricks[i].file_start,
+        struct file_inf aux = sound_bricks[i].parentFile->getData(sound_bricks[i].file_start,
                                                              sound_bricks[i].file_end);
+        for(int j1 = 0, j2 = sound_bricks[i].start_time; j1 < sound_bricks[i].get_lenght(); j1++)
+        {
+            compiled_file.fdata.data_left[j2] = aux.data_left[j1];
+            compiled_file.fdata.data_right[j2] = aux.data_right[j1];
+            j2++;
+        }
     }
 }
 
@@ -48,6 +54,8 @@ std::pair<ALuint, ALuint> Track::getBuffs()
 void Track::pushBrick(Audiofile *_file, QString _name)
 {
     sound_bricks.push_back(FilePart(_file, _name));
+    compile_track();
+    updateBuffer();
 }
 
 void Track::updateBuffer()

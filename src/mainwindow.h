@@ -45,6 +45,8 @@ private slots:
 
     void on_stop_btn_clicked();
 
+    void on_addSound2Truck_btn_clicked();
+
 private:
 
     void AdjustComboBox(const QString &name);

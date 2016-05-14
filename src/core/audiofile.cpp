@@ -104,7 +104,7 @@ file_inf Audiofile::getData(int start_index, int end_index)
     if(end_index >= audio_len)
         end_index = audio_len - 1;
     if(start_index >= audio_len)
-        start_idex = audio_len - 1;
+        start_index = audio_len - 1;
     std::size_t part_time = end_index - start_index;;
     aux.size = (part_time) * sizeof(int);
 

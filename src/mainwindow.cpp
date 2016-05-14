@@ -86,6 +86,8 @@ void MainWindow::on_unloadFile_btn_clicked()
 
     if(filesList.size() == 0)
         return;
+    if(!ui->infoWindow->currentIndex().isValid())
+        return;
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Unload file", "Do you really want to unload file from the project?",
                           QMessageBox::Yes | QMessageBox::No);
@@ -134,6 +136,7 @@ void MainWindow::on_addTrack_btn_clicked()
     ui->statusBar->showMessage("Added track " + QString::number(workspace->tracks_cnt()), 3000);
 }
 
+
 void MainWindow::on_play_btn_clicked()
 {
     if(ui->play_btn->isEnabled())
@@ -142,7 +145,25 @@ void MainWindow::on_play_btn_clicked()
         workspace->play();
 }
 
+
 void MainWindow::on_stop_btn_clicked()
 {
     workspace->stop();
+}
+
+
+void MainWindow::on_addSound2Truck_btn_clicked()
+{
+    if(currModel == 1)
+        return;
+    if(filesList.size() == 0)
+        return;
+    if(!ui->infoWindow->currentIndex().isValid())
+        return;
+
+    int index = ui->infoWindow->currentIndex().row();
+    QString qFilePartName = filesList[index];
+    std::string filePartName = qFilePartName.toStdString();
+    qFilePartName += "_brick";
+    workspace->tracks[workspace->tracks_cnt() - 1]->pushBrick(workspace->files[filePartName], qFilePartName);
 }

@@ -94,12 +94,12 @@ public:
     int tracks_cnt();
     void init_source(ALuint src, ALuint buff, int x, int y, int z);
     std::map<std::string, Audiofile*> files;
+    std::vector<Track *> tracks;
 private:
     int default_track_len = 300;              //in seconds
     MainWindow *parentWindow;
     ALCdevice *device;
     ALCcontext *context;
-    std::vector<Track *> tracks;
     std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;
