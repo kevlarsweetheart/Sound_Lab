@@ -1,4 +1,5 @@
 #include "audio.h"
+#include <cmath>
 
 using namespace Audio;
 
@@ -13,24 +14,19 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
     struct file_inf buf;
     buf.bit_depth = 16;
     buf.frequency = frequency;
-    buf.data_left = new int[len];
-    buf.data_right = new int[len];
-    //memset(buf.data_left, 0, len*sizeof(int));
-    //memset(buf.data_right, 0, len*sizeof(int));
     for(int i = 0; i < len; i++)
     {
-        buf.data_left[i] = rand();
-        buf.data_right[i] = rand();
+        buf.data_left.push_back(0);
+        buf.data_right.push_back(0);
     }
     buf.size = len*sizeof(int);
-    buf.format = 4355;
+    buf.format = AL_FORMAT_STEREO16;
     this->compiled_file.load_data(buf);
 
     //Init buffers
     alGenBuffers(1, &Lbuffer);
     alGenBuffers(1, &Rbuffer);
-
-    parent->check_errors();
+    update_buffer();
 }
 
 Track::~Track()
@@ -44,14 +40,14 @@ void Track::compile_track()
     {
         struct file_inf aux = sound_bricks[i].parent_file->get_data(sound_bricks[i].file_start,
                                                              sound_bricks[i].file_end);
-        for(int j1 = 0, j2 = sound_bricks[i].start_time; j1 < sound_bricks[i].get_lenght(); j1++)
+        int j2 = sound_bricks[i].start_time;
+        for(int j1 = 0; j1 < sound_bricks[i].get_lenght(); j1++)
         {
-            compiled_file.fdata.data_left[j2] = aux.data_left[j1];
-            compiled_file.fdata.data_right[j2] = aux.data_right[j1];
-            int x = compiled_file.fdata.data_left[j2];
-            int y = compiled_file.fdata.data_right[j2];
+            compiled_file.fdata.data_left[j2] += aux.data_left[j1];
+            compiled_file.fdata.data_right[j2] += aux.data_right[j1];
             j2++;
         }
+        qDebug() << j2 << "here";
     }
 }
 
@@ -65,20 +61,34 @@ void Track::push_brick(Audiofile *_file, QString _name)
 {
     sound_bricks.push_back(FilePart(_file, _name));
     compile_track();
-    //update_buffer();
+    this->parent->unqueue_from_source(this);
+    update_buffer();
+    this->parent->init_source(this);
 }
 
 void Track::update_buffer()
 {
     alBufferData(this->Lbuffer, this->compiled_file.fdata.format,
-                 this->compiled_file.fdata.data_left,
-                 this->compiled_file.get_audio_length() * sizeof this->compiled_file.fdata.data_left[0],
+                 this->compiled_file.fdata.data_left.data(),
+                 this->compiled_file.fdata.size,
             this->compiled_file.fdata.frequency);
 
     alBufferData(this->Rbuffer, this->compiled_file.fdata.format,
-                 this->compiled_file.fdata.data_right,
-                 this->compiled_file.get_audio_length() * sizeof this->compiled_file.fdata.data_right[0],
+                 this->compiled_file.fdata.data_right.data(),
+                 this->compiled_file.fdata.size,
             this->compiled_file.fdata.frequency);
+/*
+    qDebug() << compiled_file.fdata.data_right.size() << "left size";
+    qDebug() << compiled_file.fdata.data_right.size() << "right size";
+    qDebug() << compiled_file.fdata.size << "in bytes";
+    qDebug() << compiled_file.fdata.data_right.size() * sizeof(int);
+    qDebug() << compiled_file.fdata.format;
+    qDebug() << compiled_file.fdata.frequency;
+    for(int i = 9961890; i < 9961897; i++)
+    {
+        qDebug() << compiled_file.fdata.data_left[i] << "left";
+        qDebug() << compiled_file.fdata.data_right[i] << "right";
+    }*/
 
     parent->check_errors();
 }

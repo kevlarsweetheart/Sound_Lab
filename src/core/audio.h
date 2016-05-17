@@ -11,7 +11,7 @@
 #include <map>
 #include <QStringList>
 #include "../mainwindow.h"
-#include <qt5/QtCore/QDebug>
+#include <QDebug>
 
 #define default_frequency 44100
 
@@ -26,8 +26,8 @@ namespace Audio
 }
 
 struct file_inf {
-    int *data_left;
-    int *data_right;
+    std::vector<int> data_left;
+    std::vector<int> data_right;
     ALsizei frequency;
     ALenum format;
     ALsizei size;
@@ -93,8 +93,11 @@ public:
     void delete_track();
     int tracks_cnt();
     void init_source(ALuint src, ALuint buff, int x, int y, int z);
+    void init_source(Track *t);
+    void unqueue_from_source(Track *t);
     std::map<std::string, Audiofile*> files;
     std::vector<Track *> tracks;
+    std::map<Track*, int > track_source; //Track to num of left source map
     void close_openal();
     void check_errors();
 private:
@@ -102,7 +105,6 @@ private:
     ALCcontext *context;
     int default_track_len = 300;              //in seconds
     MainWindow *parent_window;
-    std::map<Track*, int > track_source; //Track to num of left source map
     std::pair<int, int> time_signature;
     float tempo;
     ALfloat listener_ori[6] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};

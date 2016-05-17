@@ -51,14 +51,12 @@ bool Audiofile::load_data(std::string path)
     //Copy data to left and right channels
     int *int_data = reinterpret_cast<int *>(data);
     int len = this->fdata.size / sizeof int_data[0];
-    this->fdata.data_left = new int [len];
-    this->fdata.data_right = new int [len];
     if(num_channels == 1)
     {
         for(int i = 0; i < len; ++i)
         {
-            this->fdata.data_left[i] = int_data[i];
-            this->fdata.data_right[i] = int_data[i];
+            this->fdata.data_left.push_back(int_data[i]);
+            this->fdata.data_right.push_back(int_data[i]);
         }
     }
     if(num_channels == 2)
@@ -67,24 +65,20 @@ bool Audiofile::load_data(std::string path)
         {
             if (i % 2 == 0)
             {
-                this->fdata.data_left[i] = int_data[i];
-                this->fdata.data_right[i] = 0;
+                this->fdata.data_left.push_back(int_data[i]);
+                this->fdata.data_right.push_back(0);
             }
             else
             {
-                this->fdata.data_right[i] = int_data[i];
-                this->fdata.data_left[i] = 0;
+                this->fdata.data_right.push_back(int_data[i]);
+                this->fdata.data_left.push_back(0);
             }
         }
     }
-
 }
 
 bool Audiofile::load_data(struct file_inf input)
 {
-    int len = input.size * sizeof(int);
-    this->fdata.data_left = new int[len];
-    this->fdata.data_right = new int[len];
     this->fdata = input;
 }
 
@@ -108,13 +102,10 @@ file_inf Audiofile::get_data(int start_index, int end_index)
     std::size_t part_time = end_index - start_index;;
     aux.size = (part_time) * sizeof(int);
 
-    aux.data_left = new int[part_time];
-    aux.data_right = new int[part_time];
-
     for(int i = start_index, j = 0; i < end_index; i++)
     {
-        aux.data_left[j] = fdata.data_left[i];
-        aux.data_right[j] = fdata.data_right[i];
+        aux.data_left.push_back(fdata.data_left[i]);
+        aux.data_right.push_back(fdata.data_right[i]);
         j++;
     }
     return aux;

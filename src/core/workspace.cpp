@@ -66,11 +66,13 @@ void Workspace::add_track()
     ALuint *buff_source = new ALuint [2];
 
     alGenSources((ALuint)2, buff_source);
+
+    qDebug() << buff_source[0] << " " << buff_source[1];
+
     init_source(buff_source[0], std::get<0>(newbie->get_buffs()), -1, 0, 0);
     init_source(buff_source[1], std::get<1>(newbie->get_buffs()), 1, 0, 0);
     source_vec.push_back(buff_source[0]);
     source_vec.push_back(buff_source[1]);
-    delete [] buff_source;
 
     tracks.push_back(newbie);
 }
@@ -93,6 +95,28 @@ void Workspace::init_source(ALuint src, ALuint buff, int x, int y, int z)
     alSource3f(src, AL_VELOCITY, 0, 0, 0);
     alSourcei(src, AL_LOOPING, AL_FALSE);
     alSourcei(src, AL_BUFFER, buff);
+}
+
+void Workspace::init_source(Track *t)
+{
+    ALuint l_source = this->source_vec[this->track_source[t]];
+    ALuint r_source = l_source + 1;
+    alSourcei(l_source, AL_BUFFER, t->get_buffs().first);
+    alSourcei(r_source, AL_BUFFER, t->get_buffs().second);
+    check_errors();
+}
+
+void Workspace::unqueue_from_source(Track *t)
+{
+    ALuint l_source = this->source_vec[this->track_source[t]];
+    ALuint r_source = l_source + 1;
+    if(alIsSource(l_source))
+        qDebug() << "L allright";
+    if(alIsSource(r_source))
+        qDebug() << "R allright";
+    alSourcei(l_source, AL_BUFFER, NULL);
+    alSourcei(r_source, AL_BUFFER, NULL);
+    check_errors();
 }
 
 void Workspace::close_openal()
