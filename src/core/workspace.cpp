@@ -15,6 +15,14 @@ Workspace::Workspace(MainWindow *parent_window)
     alListener3f(AL_VELOCITY, 0, 0, 0);
     alListenerfv(AL_ORIENTATION, listener_ori);
 
+    ALuint main_source;
+    alGenSources(1, &main_source);
+    init_source(main_source, NULL, 0, 0, 0);
+    source_vec.push_back(main_source);
+    is_playing = false;
+
+    play_tread = new PlayThread(this, this->parent_window);
+
     check_errors();
 }
 
@@ -43,16 +51,20 @@ QStringList Workspace::list_capture_devices()
 void Workspace::play()
 {
     alSourcePlayv((ALsizei)source_vec.size(), source_vec.data());
+    is_playing = true;
+    play_tread->start(QThread::LowPriority);
 }
 
 void Workspace::pause()
 {
     alSourcePausev((ALsizei)source_vec.size(), source_vec.data());
+    is_playing = false;
 }
 
 void Workspace::stop()
 {
     alSourceStopv((ALsizei)source_vec.size(), source_vec.data());
+    is_playing = false;
 }
 
 void Workspace::add_track()
@@ -61,7 +73,7 @@ void Workspace::add_track()
     Audio::Track *newbie = new Audio::Track(this,
                             newbie_name,
                             default_track_len * default_frequency, default_frequency);
-    track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size())));
+    track_source.insert(std::pair<Track*, int>(newbie, 2 * (tracks.size()) + 1));
 
     ALuint *buff_source = new ALuint [2];
 
@@ -103,6 +115,8 @@ void Workspace::init_source(Track *t)
     ALuint r_source = l_source + 1;
     alSourcei(l_source, AL_BUFFER, t->get_buffs().first);
     alSourcei(r_source, AL_BUFFER, t->get_buffs().second);
+    alSourcei(l_source, AL_SAMPLE_OFFSET, this->get_offset_playback());
+    alSourcei(r_source, AL_SAMPLE_OFFSET, this->get_offset_playback());
     check_errors();
 }
 
@@ -129,10 +143,25 @@ void Workspace::check_errors()
 {
     ALenum err_al = alGetError();
     ALenum err_alc = alcGetError(device);
-    char* err_al_str = new char[20];
+    char* err_al_str = new char[30];
     err_al_str = (char*)alGetString(err_al);
-    char* err_alc_str = new char[20];
+    char* err_alc_str = new char[30];
     err_alc_str = (char*)alcGetString(device, err_alc);
     qDebug() << err_alc_str;
     qDebug() << err_al_str;
 }
+
+int Workspace::get_offset_playback()
+{
+    ALint offset;
+    alGetSourcei(source_vec[0], AL_SEC_OFFSET, &offset);
+    //check_errors();
+    qDebug() << offset;
+    return offset;
+}
+
+bool Workspace::get_playing_state()
+{
+    return is_playing;
+}
+

@@ -14,11 +14,13 @@ SOURCES += main.cpp \
     core/filepart.cpp \
     core/audiofile.cpp \
     mainwindow.cpp \
-    filemanager/filemanager.cpp
+    filemanager/filemanager.cpp \
+    service/playthread.cpp
 
 HEADERS += mainwindow.h \
     core/audio.h \
     filemanager/filemanager.h \
+    service/playthread.h
 
 FORMS += \
     mainwindow.ui \

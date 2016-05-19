@@ -1,5 +1,4 @@
 #include "audio.h"
-#include <cmath>
 
 using namespace Audio;
 
@@ -20,7 +19,7 @@ Track::Track(Workspace *parent, std::string _name, int len, int frequency)
         buf.data_right.push_back(0);
     }
     buf.size = len*sizeof(int);
-    buf.format = AL_FORMAT_STEREO16;
+    buf.format = AL_FORMAT_MONO16;
     this->compiled_file.load_data(buf);
 
     //Init buffers
@@ -77,18 +76,6 @@ void Track::update_buffer()
                  this->compiled_file.fdata.data_right.data(),
                  this->compiled_file.fdata.size,
             this->compiled_file.fdata.frequency);
-/*
-    qDebug() << compiled_file.fdata.data_right.size() << "left size";
-    qDebug() << compiled_file.fdata.data_right.size() << "right size";
-    qDebug() << compiled_file.fdata.size << "in bytes";
-    qDebug() << compiled_file.fdata.data_right.size() * sizeof(int);
-    qDebug() << compiled_file.fdata.format;
-    qDebug() << compiled_file.fdata.frequency;
-    for(int i = 9961890; i < 9961897; i++)
-    {
-        qDebug() << compiled_file.fdata.data_left[i] << "left";
-        qDebug() << compiled_file.fdata.data_right[i] << "right";
-    }*/
 
     parent->check_errors();
 }

@@ -12,10 +12,13 @@
 #include <QStringList>
 #include "../mainwindow.h"
 #include <QDebug>
+#include <QObject>
+#include "service/playthread.h"
 
 #define default_frequency 44100
 
 class MainWindow;
+class PlayThread;
 
 namespace Audio
 {
@@ -73,11 +76,11 @@ public:
     void compile_track();
     std::pair<ALuint, ALuint> get_buffs();
     std::vector<Audio::FilePart> sound_bricks;
-    void push_brick(Audio::Audiofile *_file, QString _name);
+    void push_brick(Audio::Audiofile *_file, QString _name);    //Add file part to track
 private:
     ALuint Lbuffer, Rbuffer;
     Workspace *parent;
-    void update_buffer();
+    void update_buffer();   //updates buffers
 };
 
 class Audio::Workspace
@@ -100,15 +103,22 @@ public:
     std::map<Track*, int > track_source; //Track to num of left source map
     void close_openal();
     void check_errors();
+    int get_offset_playback(); //in samples
+    int curr_offset = 0;    //in samples
+    bool get_playing_state();
+
 private:
     ALCdevice *device;
     ALCcontext *context;
-    int default_track_len = 300;              //in seconds
+    int default_track_len = 380;              //in seconds
+    bool is_playing;
     MainWindow *parent_window;
     std::pair<int, int> time_signature;
     float tempo;
     ALfloat listener_ori[6] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
     std::vector<ALuint> source_vec;
+    PlayThread *play_tread;
+    Track *metronome;
 };
 
 #endif // AUDIO_H

@@ -42,6 +42,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::set_playback_lcd(double value)
+{
+    ui->playback_lcd->display(value);
+}
+
 
 void MainWindow::on_loadFile_btn_clicked()
 {
@@ -160,10 +165,11 @@ void MainWindow::on_play_btn_clicked()
 void MainWindow::on_stop_btn_clicked()
 {
     workspace->stop();
+    ui->play_btn->setChecked(false);
 }
 
 
-void MainWindow::on_addSound2Truck_btn_clicked()
+void MainWindow::on_addSound2Track_btn_clicked()
 {
     if(currModel == 1)
         return;

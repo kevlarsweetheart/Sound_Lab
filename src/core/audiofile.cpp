@@ -35,10 +35,32 @@ bool Audiofile::load_data(std::string path)
     ALboolean loop;
     alutLoadWAVFile(file_name, &(this->fdata.format), &data, &(this->fdata.size),
                     &(this->fdata.frequency), &loop);
-    const char *aux_path = path.c_str();
+    //const char *aux_path = path.c_str();
 
     short num_channels;
 
+    if(this->fdata.format == AL_FORMAT_MONO8)
+    {
+        this->fdata.bit_depth = 8;
+        num_channels = 1;
+    }
+    if(this->fdata.format == AL_FORMAT_MONO16)
+    {
+        this->fdata.bit_depth = 16;
+        num_channels = 1;
+    }
+    if(this->fdata.format == AL_FORMAT_STEREO8)
+    {
+        this->fdata.bit_depth = 8;
+        num_channels = 2;
+    }
+    if(this->fdata.format == AL_FORMAT_STEREO16)
+    {
+        this->fdata.bit_depth = 16;
+        num_channels = 2;
+    }
+
+    /*
     FILE *fp;
     fp = fopen(aux_path, "r");
     fseek(fp, 22, SEEK_SET);
@@ -47,6 +69,7 @@ bool Audiofile::load_data(std::string path)
     fseek(fp, 34, SEEK_SET);
     fread(&(this->fdata.bit_depth), sizeof(short), 1, fp);
     fclose(fp);
+    */
 
     //Copy data to left and right channels
     int *int_data = reinterpret_cast<int *>(data);
@@ -61,19 +84,12 @@ bool Audiofile::load_data(std::string path)
     }
     if(num_channels == 2)
     {
-        for(int i = 0; i < len; ++i)
+        for(int i = 0; i < len / 2; ++i)
         {
-            if (i % 2 == 0)
-            {
-                this->fdata.data_left.push_back(int_data[i]);
-                this->fdata.data_right.push_back(0);
-            }
-            else
-            {
-                this->fdata.data_right.push_back(int_data[i]);
-                this->fdata.data_left.push_back(0);
-            }
+            this->fdata.data_left.push_back(int_data[2*i]);
+            this->fdata.data_right.push_back(int_data[2*i + 1]);
         }
+        this->fdata.size /= 2;
     }
 }
 
@@ -102,11 +118,10 @@ file_inf Audiofile::get_data(int start_index, int end_index)
     std::size_t part_time = end_index - start_index;;
     aux.size = (part_time) * sizeof(int);
 
-    for(int i = start_index, j = 0; i < end_index; i++)
+    for(int i = start_index; i < end_index; i++)
     {
         aux.data_left.push_back(fdata.data_left[i]);
         aux.data_right.push_back(fdata.data_right[i]);
-        j++;
     }
     return aux;
 }

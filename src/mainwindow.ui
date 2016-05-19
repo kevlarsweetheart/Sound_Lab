@@ -84,6 +84,9 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLCDNumber" name="playback_lcd"/>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
         <item>
          <widget class="QPushButton" name="stop_btn">
@@ -272,7 +275,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="addSound2Truck_btn">
+         <widget class="QPushButton" name="addSound2Track_btn">
           <property name="text">
            <string>Add sound to track</string>
           </property>
@@ -342,8 +345,8 @@
    <slot>display(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>307</x>
-     <y>103</y>
+     <x>298</x>
+     <y>181</y>
     </hint>
     <hint type="destinationlabel">
      <x>309</x>
