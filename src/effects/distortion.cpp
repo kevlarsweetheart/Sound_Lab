@@ -1,9 +1,8 @@
 #include "effects.h"
 
-using namespace Effects;
-
-Distortion::Distortion()
+Distortion::Distortion() : Effect::Effect()
 {
+    this->type = DISTORTION;
 }
 
 void Distortion::set_distort_val(int value)
@@ -16,7 +15,7 @@ int Distortion::get_distort_val()
     return this->distortion_val;
 }
 
-void Distortion::apply_effect()
+std::vector<int> Distortion::apply_effect(std::vector<int> amplitudes)
 {
     int len = amplitudes.size();
     for (int i = 0; i < len; ++i)
@@ -26,4 +25,5 @@ void Distortion::apply_effect()
         else if (amplitudes[i] < -distortion_val)
             amplitudes[i] = -distortion_val;
     }
+    return amplitudes;
 }

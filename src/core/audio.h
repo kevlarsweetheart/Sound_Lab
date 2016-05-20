@@ -30,6 +30,12 @@ namespace Audio
     class Workspace;
 }
 
+namespace Effects
+{
+    class Effect;
+    class Distortion;
+}
+
 struct file_inf {
     std::vector<int> data_left;
     std::vector<int> data_right;
@@ -64,7 +70,7 @@ public:
     int get_end_time(); //Returns the right bound of file part in the track
     int get_lenght(); //Returns length of a file part in number of elements in data array
     int start_time, file_start, file_end;
-    std::vector<Effect *> effs;
+    std::vector<Effects::Effect *> effs;
     void add_effect(Effects::Effect *eff);
     Audiofile *parent_file;
 };

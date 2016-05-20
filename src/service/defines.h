@@ -1,3 +1,5 @@
+#pragma once
+
 enum  offset_type
 {
     SECONDS,

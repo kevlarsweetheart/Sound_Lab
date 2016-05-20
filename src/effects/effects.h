@@ -15,11 +15,9 @@ class Effect
 {
 public:
     Effect();
-    void set_amps(std::vector<int> amps);
     virtual ~Effect() = 0;
-    std::vector<int> get_amps();
-    virtual void apply_effect() = 0;
-    std::vector<int> amplitudes;
+    virtual std::vector<int> apply_effect(std::vector<int>) = 0;
+    int type;
 };
 
 class Distortion : public Effect
@@ -28,7 +26,7 @@ public:
     Distortion();
     void set_distort_val(int value);
     int get_distort_val();
-    void apply_effect();
+    std::vector<int> apply_effect(std::vector<int> amplitudes);
 private:
     int distortion_val;
 };
