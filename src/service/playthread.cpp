@@ -15,6 +15,6 @@ void PlayThread::run()
 {
     while(workspace->get_playing_state() == true)
     {
-        window->set_playback_lcd(workspace->get_offset_playback() * default_frequency);
+        window->addTime(workspace->get_offset_playback(SECONDS));
     }
 }

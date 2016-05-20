@@ -15,12 +15,16 @@ SOURCES += main.cpp \
     core/audiofile.cpp \
     mainwindow.cpp \
     filemanager/filemanager.cpp \
-    service/playthread.cpp
+    service/playthread.cpp \
+    effects/effect.cpp \
+    effects/distortion.cpp
 
 HEADERS += mainwindow.h \
     core/audio.h \
     filemanager/filemanager.h \
-    service/playthread.h
+    service/playthread.h \
+    service/defines.h \
+    effects/effects.h
 
 FORMS += \
     mainwindow.ui \

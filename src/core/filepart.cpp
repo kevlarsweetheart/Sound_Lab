@@ -20,6 +20,11 @@ int FilePart::get_lenght()
     return this->file_end - this->file_start;
 }
 
+void FilePart::add_effect(Effects::Effect *eff)
+{
+    effs.push_back(eff);
+}
+
 int FilePart::get_end_time()
 {
     return this->start_time + this->get_lenght();

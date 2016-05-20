@@ -11,5 +11,5 @@ HEADERS += mathlib.h\
         mathlib_global.h
 
 DESTDIR = $$MATHLIB
-DLLDESTDIR = $$SLABLIB
+DLLDESTDIR = $$SLABBIN
 target.path += $$DLLDESTDIR

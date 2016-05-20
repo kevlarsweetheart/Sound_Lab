@@ -14,6 +14,8 @@
 #include <QDebug>
 #include <QObject>
 #include "service/playthread.h"
+#include "service/defines.h"
+#include "effects/effects.h"
 
 #define default_frequency 44100
 
@@ -62,6 +64,8 @@ public:
     int get_end_time(); //Returns the right bound of file part in the track
     int get_lenght(); //Returns length of a file part in number of elements in data array
     int start_time, file_start, file_end;
+    std::vector<Effect *> effs;
+    void add_effect(Effects::Effect *eff);
     Audiofile *parent_file;
 };
 
@@ -103,7 +107,7 @@ public:
     std::map<Track*, int > track_source; //Track to num of left source map
     void close_openal();
     void check_errors();
-    int get_offset_playback(); //in samples
+    float get_offset_playback(int type);
     int curr_offset = 0;    //in samples
     bool get_playing_state();
 
@@ -118,7 +122,6 @@ private:
     ALfloat listener_ori[6] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
     std::vector<ALuint> source_vec;
     PlayThread *play_tread;
-    Track *metronome;
 };
 
 #endif // AUDIO_H

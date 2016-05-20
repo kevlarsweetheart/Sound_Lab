@@ -16,12 +16,21 @@ Workspace::Workspace(MainWindow *parent_window)
     alListenerfv(AL_ORIENTATION, listener_ori);
 
     ALuint main_source;
+    ALuint main_buf;
+    int *aux_data = new int[default_track_len * default_frequency];
+    memset(aux_data, 0, default_track_len * default_frequency);
+    alGenBuffers(1, &main_buf);
+    alBufferData(main_buf, AL_FORMAT_MONO16, aux_data,
+                 default_track_len * default_frequency,
+            default_frequency);
+
     alGenSources(1, &main_source);
-    init_source(main_source, NULL, 0, 0, 0);
+    init_source(main_source, main_buf, 0, 0, 0);
     source_vec.push_back(main_source);
     is_playing = false;
 
     play_tread = new PlayThread(this, this->parent_window);
+    delete [] aux_data;
 
     check_errors();
 }
@@ -65,6 +74,8 @@ void Workspace::stop()
 {
     alSourceStopv((ALsizei)source_vec.size(), source_vec.data());
     is_playing = false;
+    this->curr_offset = 0;
+
 }
 
 void Workspace::add_track()
@@ -81,8 +92,8 @@ void Workspace::add_track()
 
     qDebug() << buff_source[0] << " " << buff_source[1];
 
-    init_source(buff_source[0], std::get<0>(newbie->get_buffs()), -1, 0, 0);
-    init_source(buff_source[1], std::get<1>(newbie->get_buffs()), 1, 0, 0);
+    init_source(buff_source[0], std::get<0>(newbie->get_buffs()), 1, 0, 0);
+    init_source(buff_source[1], std::get<1>(newbie->get_buffs()), -1, 0, 0);
     source_vec.push_back(buff_source[0]);
     source_vec.push_back(buff_source[1]);
 
@@ -115,8 +126,10 @@ void Workspace::init_source(Track *t)
     ALuint r_source = l_source + 1;
     alSourcei(l_source, AL_BUFFER, t->get_buffs().first);
     alSourcei(r_source, AL_BUFFER, t->get_buffs().second);
-    alSourcei(l_source, AL_SAMPLE_OFFSET, this->get_offset_playback());
-    alSourcei(r_source, AL_SAMPLE_OFFSET, this->get_offset_playback());
+    qDebug() << "Before";
+    alSourcei(l_source, AL_SAMPLE_OFFSET, (ALuint)this->get_offset_playback(SAMPLES));
+    alSourcei(r_source, AL_SAMPLE_OFFSET, (ALuint)this->get_offset_playback(SAMPLES));
+    qDebug() << "After";
     check_errors();
 }
 
@@ -151,12 +164,17 @@ void Workspace::check_errors()
     qDebug() << err_al_str;
 }
 
-int Workspace::get_offset_playback()
+float Workspace::get_offset_playback(int type)
 {
-    ALint offset;
-    alGetSourcei(source_vec[0], AL_SEC_OFFSET, &offset);
-    //check_errors();
-    qDebug() << offset;
+    ALfloat offset;
+    switch (type) {
+    case SECONDS:
+        alGetSourcef(source_vec[0], AL_SEC_OFFSET, &offset);
+        break;
+    case SAMPLES:
+        alGetSourcef(source_vec[0], AL_SAMPLE_OFFSET, &offset);
+        break;
+    }
     return offset;
 }
 

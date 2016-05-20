@@ -24,9 +24,6 @@
     <bool>true</bool>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0,0,1">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetNoConstraint</enum>
-    </property>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -84,7 +81,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLCDNumber" name="playback_lcd"/>
+       <widget class="QLCDNumber" name="lcdNumber"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">

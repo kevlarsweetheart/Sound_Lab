@@ -1,10 +1,17 @@
-#ifndef MATHLIB_H
-#define MATHLIB_H
+#pragma once
+#ifndef EFFECTS_H
+#define EFFECTS_H
 
-#include "mathlib_global.h"
 #include <vector>
+#include "service/defines.h"
 
-class MATHLIBSHARED_EXPORT Effect
+namespace Effects
+{
+    class Effect;
+    class Distortion;
+}
+
+class Effect
 {
 public:
     Effect();
@@ -15,7 +22,7 @@ public:
     std::vector<int> amplitudes;
 };
 
-class MATHLIBSHARED_EXPORT Distortion : public Effect
+class Distortion : public Effect
 {
 public:
     Distortion();
@@ -26,4 +33,4 @@ private:
     int distortion_val;
 };
 
-#endif // MATHLIB_H
+#endif // EFFECTS_H
